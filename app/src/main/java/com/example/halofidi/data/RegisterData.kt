@@ -1,3 +1,3 @@
-package com.example.halofidi
+package com.example.halofidi.data
 
 class RegisterData (val email:String, val username:String, val password: String)

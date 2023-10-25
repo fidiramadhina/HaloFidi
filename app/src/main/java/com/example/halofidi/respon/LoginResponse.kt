@@ -1,4 +1,4 @@
-package com.example.halofidi
+package com.example.halofidi.respon
 
 import com.google.gson.annotations.SerializedName
 

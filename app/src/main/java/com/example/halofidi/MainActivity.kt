@@ -2,9 +2,8 @@ package com.example.halofidi
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.preference.PreferenceManager
-import android.widget.Button
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,17 +14,19 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.halofidi.data.LoginData
+import com.example.halofidi.frontend.Homepage
+import com.example.halofidi.respon.LoginResponse
+import com.example.halofidi.service.LoginService
 import com.example.halofidi.ui.theme.HaloFidiTheme
 import retrofit2.Call
 import retrofit2.Callback
@@ -37,16 +38,29 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            HaloFidiTheme {
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    val navController = rememberNavController()
-                    NavHost(navController = navController, startDestination = "login")
-                    {
-                        composable("Greeting") {
+//            HaloFidiTheme {
+//                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+        val sharedPreferences: SharedPreferences = LocalContext.current.getSharedPreferences("auth", Context.MODE_PRIVATE)
+        val navController = rememberNavController()
+
+        var startDestination: String
+        var jwt = sharedPreferences.getString("jwt", "")
+        if (jwt.equals("")) {
+            startDestination = "greeting"
+        }else {
+            startDestination = "pagetwo"
+        }
+
+        NavHost(navController, startDestination = startDestination) {
+               composable(route = "Greeting") {
                             Greeting(navController)
-                        }
-                    }
-                }
+               }
+               composable(route = "pagetwo"){
+                   Homepage(navController)
+               }
+               composable(route = "createuserpage"){
+                   CreateUserPage(navController)
+               }
             }
         }
     }
@@ -65,7 +79,34 @@ fun Greeting(navController: NavController, context: Context = LocalContext.curre
     var jwt by remember { mutableStateOf("") }
 
     jwt = preferencesManager.getData("jwt")
-        Column(
+    
+    Scaffold (
+        topBar = {
+            TopAppBar(
+                title = { Text(text = "Halo") },
+                colors = TopAppBarDefaults.smallTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.primary,
+                ),
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = { /*TODO*/ }) {
+                Icon(Icons.Default.Add, contentDescription = "Add")
+            }
+        },
+        bottomBar = {
+            BottomAppBar {
+                Text(
+                    text = "Terimakasih",
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+        }
+    ){
+    innerPadding ->
+    Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -130,8 +171,8 @@ fun Greeting(navController: NavController, context: Context = LocalContext.curre
             }
             Text(text = jwt)
 
+        }
     }
-
 
 }
 
