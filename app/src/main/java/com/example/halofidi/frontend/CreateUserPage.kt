@@ -1,7 +1,6 @@
 package com.example.halofidi.frontend
 
 import android.content.Context
-import android.preference.PreferenceManager
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,9 +23,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.navigation.NavController
+import com.example.halofidi.PreferencesManager
 import com.example.halofidi.data.RegisterData
 import com.example.halofidi.respon.LoginResponse
-import com.example.halofidi.PreferencesManager
 import com.example.halofidi.service.RegisterServices
 import retrofit2.Call
 import retrofit2.Callback
@@ -37,7 +36,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateUserPage(navController: NavController, context: Context = LocalContext.current){
-    val preferencesManager = remember { PreferenceManager(context = context) }
+    val preferencesManager = remember { PreferencesManager(context = context) }
     var username by remember { mutableStateOf(TextFieldValue("")) }
     var password by remember { mutableStateOf(TextFieldValue("")) }
     var email by remember { mutableStateOf(TextFieldValue("")) }
@@ -67,6 +66,7 @@ fun CreateUserPage(navController: NavController, context: Context = LocalContext
                 email = newText
             }, label = { Text("Email") })
             ElevatedButton(onClick = {
+//                var baseUrl = "http://10.217.17.11:1337/api/"
                 var baseUrl = "http://10.0.2.2:1337/api/"
                 val retrofit = Retrofit.Builder()
                     .baseUrl(baseUrl)

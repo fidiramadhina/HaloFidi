@@ -1,4 +1,5 @@
 package com.example.halofidi.frontend
+
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -35,13 +36,13 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Homepage(navController: NavController, context: Context = LocalContext.current){
     //var listUser: List<UserRespon> = remember
-    val listUser = remember { mutableStateListOf<UserRespon>() }
+    val listUser = remember { mutableStateListOf<UserRespon>()}
     //var listUser: List<UserRespon> by remember { mutableStateOf(List<UserRespon>()) }
+//    var baseUrl = "http://10.217.17.11:1337/api/"
     var baseUrl = "http://10.0.2.2:1337/api/"
     val retrofit = Retrofit.Builder()
         .baseUrl(baseUrl)
@@ -109,7 +110,7 @@ fun Homepage(navController: NavController, context: Context = LocalContext.curre
                                     .build()
                                     .create(UserService::class.java)
                                 val call = retrofit.delete(user.id)
-                                call.enqueue(object : Callback<UserRespon> {
+                                call.enqueue(object : Callback<UserRespon>{
                                     override fun onResponse(call: Call<UserRespon>, response: Response<UserRespon>) {
                                         print(response.code())
                                         if(response.code() == 200){
