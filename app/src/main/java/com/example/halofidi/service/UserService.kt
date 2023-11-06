@@ -1,13 +1,13 @@
 package com.example.halofidi.service
 
-import com.example.halofidi.data.LoginData
+import com.example.halofidi.data.UpdateData
 import com.example.halofidi.respon.LoginResponse
 import com.example.halofidi.respon.UserRespon
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface UserService {
@@ -16,4 +16,7 @@ interface UserService {
 
     @DELETE("users/{id}")
     fun delete(@Path("id") id : Int) : Call<UserRespon>
+
+    @PUT("users/{id}")
+    fun save(@Path("id") id: String?, @Body body: UpdateData): Call<LoginResponse>
 }

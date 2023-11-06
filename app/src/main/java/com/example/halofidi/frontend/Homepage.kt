@@ -101,7 +101,9 @@ fun Homepage(navController: NavController, context: Context = LocalContext.curre
             LazyColumn{
                 listUser.forEach { user ->
                     item {
-                        Row (modifier = Modifier.padding(10.dp).fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                        Row (modifier = Modifier
+                            .padding(10.dp)
+                            .fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                             Text(text = user.username)
                             ElevatedButton(onClick = {
                                 val retrofit = Retrofit.Builder()
@@ -114,7 +116,6 @@ fun Homepage(navController: NavController, context: Context = LocalContext.curre
                                     override fun onResponse(call: Call<UserRespon>, response: Response<UserRespon>) {
                                         print(response.code())
                                         if(response.code() == 200){
-                                            listUser.remove(user)
                                         }else if(response.code() == 400){
                                             print("error login")
                                             var toast = Toast.makeText(context, "Username atau password salah", Toast.LENGTH_SHORT).show()
@@ -129,6 +130,11 @@ fun Homepage(navController: NavController, context: Context = LocalContext.curre
                                 })
                             }) {
                                 Text("Delete")
+                            }
+                            ElevatedButton(onClick = {
+                                navController.navigate("editusrpage" + user.id + "/" + user.username)
+                            }) {
+                                Text("Edit")
                             }
                         }
                     }

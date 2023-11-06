@@ -1,4 +1,5 @@
 package com.example.halofidi
+
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -33,11 +34,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.halofidi.data.LoginData
 import com.example.halofidi.frontend.CreateUserPage
+import com.example.halofidi.frontend.EditUserPage
 import com.example.halofidi.frontend.Homepage
 import com.example.halofidi.respon.LoginResponse
 import com.example.halofidi.service.LoginService
@@ -64,7 +68,7 @@ class MainActivity : ComponentActivity() {
                 startDestination = "pagetwo"
             }
 
-            NavHost(navController, startDestination = startDestination) {
+            NavHost(navController = navController, startDestination = startDestination) {
                 composable(route = "greeting") {
                     Greeting(navController)
                 }
@@ -73,6 +77,11 @@ class MainActivity : ComponentActivity() {
                 }
                 composable(route = "createuserpage") {
                     CreateUserPage(navController)
+                }
+                composable(route = "edituserpage/{userid}/{username}",
+                    ) {backStackEntry ->
+
+                    EditUserPage(navController, backStackEntry.arguments?.getString("userid"), backStackEntry.arguments?.getString("username"))
                 }
             }
         }
@@ -102,7 +111,7 @@ fun Greeting(navController: NavController, context: Context = LocalContext.curre
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { navController.navigate("createuserpage")}) {
+            FloatingActionButton(onClick = { /*TODO*/ }) {
                 Icon(Icons.Default.Add, contentDescription = "Add")
             }
         },
